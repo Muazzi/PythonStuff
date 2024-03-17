@@ -60,16 +60,21 @@ def determine_winner(player,computer):
 
 
 
-player_input = int(input("What do you choose? Type 0 for Rock, 1 for Paper or 2 for Scissors."))
-player_choice=''
-computer_choice=''
-#How you will generate a random choice for the computer.
-computer_input = random.randint(0,2)
-player_choice = get_choice(player_input)
-computer_choice = get_choice(computer_input)
-print("Player choice:")
-print(player_choice)
+player_input = int(input("What do you choose? Type 0 for Rock, 1 for Paper or 2 for Scissors.\n"))
+if player_input >=3:
+    print("Invalid choice game over!")
+else:
+    player_choice = ''
+    computer_choice = ''
+    # How you will generate a random choice for the computer.
+    computer_input = random.randint(0, 2)
+    player_choice = get_choice(player_input)
+    computer_choice = get_choice(computer_input)
+    print("Player choice:")
+    print(player_choice)
 
-print("Computer choice:")
-print(computer_choice)
-determine_winner(player_choice,computer_choice)
+    print("Computer choice:")
+    print(computer_choice)
+    determine_winner(player_choice, computer_choice)
+
+
