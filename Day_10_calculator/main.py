@@ -1,6 +1,6 @@
 import  art
 print(art.logo)
-
+calulator_list = []
 def pickOperation():
     print('+')
     print('-')
@@ -21,22 +21,24 @@ def performOperation(num1 ,num2,operation):
             return   num1/num2
 
 
-
-
-
-
-
-
-
-
+# read in one number at a time
+# number->operation->number
+# keep track of the total
 
 in_operation = False
 
 while not in_operation:
-    first_num = int(input('whats the first number: ? '))
-    operation = pickOperation()
+    first_num  = 0
+    second_num = 0
+    if len(calulator_list)==0:
+        first_num = int(input('whats the first number: ? '))
+        calulator_list.append(first_num)
+
     second_num = int(input("What's the next number?:"))
-    result = performOperation(num1=first_num, num2=second_num, operation=operation)
+    calulator_list.append(second_num)
+    operation = pickOperation()
+
+    result = performOperation(num1=calulator_list[0], num2=calulator_list[1], operation=operation)
     print(
         f"{first_num}{operation}{second_num} = {performOperation(num1=first_num, num2=second_num, operation=operation)} ")
 
@@ -46,17 +48,14 @@ while not in_operation:
     next_operation = next_operation.casefold()
     match next_operation:
         case 'n':
-
-            first_num = 0
-            result = 0
-            second_num =0
-            continue
-
+            calulator_list.clear()
 
         case 'y':
             operation = pickOperation()
+            calulator_list[0] = result
             second_num = int(input("What's the next number?:"))
-            result2 = performOperation(num1=result, num2=second_num, operation=operation)
+            calulator_list.append(second_num)
+            result2 = performOperation(num1=result, num2=calulator_list[1], operation=operation)
 
             print(
                 f"{result}{operation}{second_num}= {result2}")
@@ -65,6 +64,10 @@ while not in_operation:
             in_operation = True
             break
 
+
+
+
+#program
 
 
 
