@@ -13,25 +13,36 @@ print(logo)
 # dictionary of dictionaries
 #generate values from 2-10
 
-def deal(playercards,computer_cards,deck,dealer_cards):
+def deal(playercards,deck,dealer_cards):
     last_player_keys= list(playercards.keys())#[-1]
     last_player_key = last_player_keys[-1]
-
-    #last_dealer_keys = list(dealer_cards.keys())
-    #last_dealer_key = last_dealer_keys[-1]
     key_prefix = "card"
     last_player_val = int(re.sub(key_prefix,"",last_player_key))
-    #last_dealer_val = int(re.sub(key_prefix,"",last_dealer_key))
     last_player_val+=1
-    #last_dealer_val+=1
-    print(type(playercards))
     key = key_prefix+str(last_player_val)
-    print(type(key))
-    playercards[f'{key}']= deck[next(dealer_cards)]
-
-
+    dealer_card_value = deck[next(dealer_cards)]
+    playercards[f'{key}'] =dealer_card_value
     return  playercards
-    #dealer_cards[key_prefix+str(last_dealer_val)]=deck[next(deck)]
+
+#this function is going to take in the cards
+# its going to look to check if there are aces in there
+#if the index of the aces are not 0 and the sum of the values are not >=21 the new value will be 1
+def check_for_aces(cards):
+    # turning the cards keys into list
+    cards_list = list(cards.keys())
+    #here im summing the values
+    cards_values = sum(cards.values())
+    print(cards)
+    print(f'card values : {cards_values}')
+    #if the values >21
+    if cards_values>21:
+        res = {key: val for key, val in cards.items() if re.search("ace", key)}
+        for k , v in res.items():
+            cards[k]=1
+
+    return  cards
+#
+
 
 #will need a empty dictionary called deck
 deck_of_cards = {}
@@ -47,7 +58,7 @@ def generate_cards(suit):
     #added jack
     deck_of_cards[suit + '_' + 'j'] = 10
     for num in range(2,11):
-        deck_of_cards[suit+'_'+str(num)]= num
+        deck_of_cards[suit+'_'+str(num)] = num
 
     return deck_of_cards
 
@@ -76,44 +87,36 @@ player_card_values = list(player_cards.values())
 computer_card_values = list(computer_cards.values())
 in_game = False
 while  not in_game:
+    player_card_values = list(player_cards.values())
+    computer_card_values = list(computer_cards.values())
     print(f"Your cards : {player_card_values}")
     print(f"Computers cards: {computer_card_values}")
 
     another_card_input = input("Type 'y' to get another card,type 'n' to pass \n")
     if another_card_input == 'y':
-       player_cards= deal(player_cards,computer_cards,deck_of_cards,dealer_cards)
+       player_cards= deal(player_cards,deck_of_cards,dealer_cards)
+       player_cards = check_for_aces(player_cards)
+       computer_cards= deal(computer_cards,deck_of_cards,dealer_cards)
        print(f"Your cards : {player_card_values}")
        print(f"Computers cards: {computer_card_values}")
+       if sum(player_card_values) > 21:
+           print('You lose')
     elif another_card_input == 'n':
+        computer_cards = deal(computer_cards, deck_of_cards, dealer_cards)
         total_player_values = sum(player_card_values)
         total_computer_values = sum(computer_card_values)
         if total_player_values > total_computer_values & total_player_values < 21:
             print("You win!")
+            in_game = True
         elif sum(player_card_values) < sum(computer_card_values):
             print("You lose")
+            in_game = True
         else:
             print("Invalid input")
 
 
 
 
-#this function is going to take in the cards
-# its going to look to check if there are aces in there
-#if the index of the aces are not 0 and the sum of the values are not >=21 the new value will be 1
-def check_for_aces(cards):
-    # turning the cards keys into list
-    cards_list = list(cards.keys())
-    #here im summing the values
-    cards_values = sum(cards.values())
-    #if the values >21
-    if cards_values>21:
-        res = {key: val for key, val in cards.items() if re.search("a", key)}
-
-        for k, v in res:
-            cards[k] = 1
-
-    return  cards
-# this function will take in a the player/computer card and assign the next card in the deck
 
 
 
